@@ -1,0 +1,23 @@
+{
+  "F55B78A1-FD1A-4191-B958-BEC35139FD17" : {
+    "objectMetadataList" : [
+      [
+        "F55B78A1-FD1A-4191-B958-BEC35139FD17",
+        "Root"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      },
+      [
+        "F55B78A1-FD1A-4191-B958-BEC35139FD17",
+        "Root",
+        "Material"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      }
+    ]
+  }
+}

@@ -1,0 +1,163 @@
+#usda 1.0
+(
+    customLayerData = {
+        string creator = "Reality Composer Pro Version 2.0 (448.0.0.500.6)"
+    }
+    defaultPrim = "Root"
+    metersPerUnit = 1
+    upAxis = "Y"
+)
+
+def Xform "Root"
+{
+    def Material "Material"
+    {
+        asset inputs:LeftEye = @mask_image.png@ (
+            customData = {
+                dictionary realitykit = {
+                    float2 positionInSubgraph = (61.5, 142.5)
+                    int stackingOrderInSubgraph = 536
+                }
+            }
+        )
+        asset inputs:RightEye (
+            customData = {
+                dictionary realitykit = {
+                    float2 positionInSubgraph = (61.5, 766)
+                    int stackingOrderInSubgraph = 538
+                }
+            }
+        )
+        token outputs:mtlx:surface.connect = </Root/Material/UnlitSurface.outputs:out>
+        token outputs:realitykit:vertex
+        float2 ui:nodegraph:realitykit:subgraphOutputs:pos = (1504.75, 351.75)
+        int ui:nodegraph:realitykit:subgraphOutputs:stackingOrder = 565
+
+        def Shader "Image"
+        {
+            uniform token info:id = "ND_image_color3"
+            color3f inputs:default
+            prepend asset inputs:file.connect = </Root/Material.inputs:RightEye>
+            string inputs:filtertype
+            float2 inputs:texcoord
+            color3f outputs:out
+            float2 ui:nodegraph:node:pos = (365.82214, 264.57263)
+            int ui:nodegraph:node:stackingOrder = 577
+            string[] ui:nodegraph:realitykit:node:attributesShowingChildren = ["outputs:out"]
+        }
+
+        def Shader "Image_1"
+        {
+            uniform token info:id = "ND_image_color3"
+            color3f inputs:default = (1, 1, 1)
+            asset inputs:file.connect = </Root/Material.inputs:LeftEye>
+            string inputs:filtertype
+            float2 inputs:texcoord
+            string inputs:uaddressmode
+            string inputs:vaddressmode
+            color3f outputs:out
+            float2 ui:nodegraph:node:pos = (360.6847, 13.53789)
+            int ui:nodegraph:node:stackingOrder = 565
+            string[] ui:nodegraph:realitykit:node:attributesShowingChildren = ["outputs:out"]
+        }
+
+        def Shader "GeometrySwitchCameraIndex"
+        {
+            uniform token info:id = "ND_realitykit_geometry_switch_cameraindex_color3"
+            color3f inputs:left.connect = </Root/Material/Image_1.outputs:out>
+            color3f inputs:mono.connect = </Root/Material/Image_1.outputs:out>
+            color3f inputs:right.connect = </Root/Material/Image.outputs:out>
+            color3f outputs:out
+            float2 ui:nodegraph:node:pos = (990, 307.75)
+            int ui:nodegraph:node:stackingOrder = 539
+            string[] ui:nodegraph:realitykit:node:attributesShowingChildren = ["outputs:out", "inputs:left"]
+        }
+
+        def Shader "UnlitSurface"
+        {
+            uniform token info:id = "ND_realitykit_unlit_surfaceshader"
+            bool inputs:applyPostProcessToneMap = 0
+            color3f inputs:color.connect = </Root/Material/GeometrySwitchCameraIndex.outputs:out>
+            bool inputs:hasPremultipliedAlpha = 0
+            float inputs:opacity = 1
+            float inputs:opacity.connect = </Root/Material/GeometrySwitchCameraIndex_1.outputs:out>
+            float inputs:opacityThreshold
+            token outputs:out
+            float2 ui:nodegraph:node:pos = (1255.75, 390.35315)
+            int ui:nodegraph:node:stackingOrder = 579
+            string[] ui:nodegraph:realitykit:node:attributesShowingChildren = ["inputs:opacity", "inputs:opacityThreshold"]
+        }
+
+        def Shader "RealityKitTexture2D"
+        {
+            uniform token info:id = "ND_RealityKitTexture2D_vector4"
+            string inputs:border_color
+            float inputs:dynamic_min_lod_clamp
+            asset inputs:file.connect = </Root/Material.inputs:LeftEye>
+            string inputs:mag_filter
+            string inputs:min_filter
+            bool inputs:no_flip_v = 1
+            int2 inputs:offset
+            string inputs:u_wrap_mode
+            string inputs:v_wrap_mode
+            float4 outputs:out
+            float2 ui:nodegraph:node:pos = (377.21286, 653.60614)
+            int ui:nodegraph:node:stackingOrder = 573
+        }
+
+        def Shader "Separate4"
+        {
+            uniform token info:id = "ND_separate4_vector4"
+            float4 inputs:in.connect = </Root/Material/RealityKitTexture2D.outputs:out>
+            float outputs:outw
+            float outputs:outy
+            float outputs:outz
+            float2 ui:nodegraph:node:pos = (718.13617, 675.01245)
+            int ui:nodegraph:node:stackingOrder = 569
+            string[] ui:nodegraph:realitykit:node:attributesShowingChildren = ["outputs:outw"]
+        }
+
+        def Shader "RealityKitTexture2D_1"
+        {
+            uniform token info:id = "ND_RealityKitTexture2D_vector4"
+            string inputs:border_color
+            float inputs:dynamic_min_lod_clamp
+            asset inputs:file.connect = </Root/Material.inputs:RightEye>
+            string inputs:mag_filter
+            string inputs:min_filter
+            bool inputs:no_flip_v = 1
+            int2 inputs:offset
+            string inputs:u_wrap_mode
+            string inputs:v_wrap_mode
+            float4 outputs:out
+            float2 ui:nodegraph:node:pos = (373.5, 1087)
+            int ui:nodegraph:node:stackingOrder = 546
+        }
+
+        def Shader "Separate4_1"
+        {
+            uniform token info:id = "ND_separate4_vector4"
+            float4 inputs:in.connect = </Root/Material/RealityKitTexture2D_1.outputs:out>
+            float outputs:outw
+            float outputs:outx
+            float outputs:outy
+            float outputs:outz
+            float2 ui:nodegraph:node:pos = (728.67126, 798.1144)
+            int ui:nodegraph:node:stackingOrder = 567
+            string[] ui:nodegraph:realitykit:node:attributesShowingChildren = ["outputs:outw"]
+        }
+
+        def Shader "GeometrySwitchCameraIndex_1"
+        {
+            uniform token info:id = "ND_realitykit_geometry_switch_cameraindex_float"
+            float inputs:left.connect = </Root/Material/Separate4.outputs:outw>
+            float inputs:mono.connect = </Root/Material/Separate4.outputs:outw>
+            float inputs:right.connect = </Root/Material/Separate4_1.outputs:outw>
+            float outputs:out
+            float2 ui:nodegraph:node:pos = (990, 555.75)
+            int ui:nodegraph:node:stackingOrder = 559
+            string[] ui:nodegraph:realitykit:node:attributesShowingChildren = ["outputs:out", "inputs:left"]
+        }
+    }
+}
+
